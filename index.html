@@ -17,20 +17,26 @@
 		{
 			var artist = document.getElementById("entry_box").value  //this gets the data from the text field and adds it to artist array
 			document.getElementById("entry_box").value = ''
-			playlist.push(artist)
-			
+			addToPlaylist(artist)
 			for(var i = 0; i < playlist.length; i++)
 			{
 				console.log(playlist[i])
 			}
 		}
+
+
+		function addToPlaylist(artist)
+		{
+			playlist.push(artist)                   
+			var txt=document.createElement("p"); 
+			txt.innerHTML= artist + " ";
+			$("#top_row").append(txt);       
+		}
 	</script>
 </header>
 <body>
-	<table>
-		<th>Hipstars</th>
-		<tr>
-			<td><input type="text" size='25' id="entry_box"></td><td><input id="addButton" type="button" onclick="enter()" value="Enter"></td>
-		</tr>
-	</table>
+		<h1>Hipstars</h1>
+		<div id='top_row'>
+			<input type="text" size='25' id="entry_box"><input id="addButton" type="button" onclick="enter()" value="Enter">
+		</div>
 </body>
