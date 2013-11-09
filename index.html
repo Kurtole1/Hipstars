@@ -1,10 +1,36 @@
 <!doctype html>
 <header>
+	<meta charset="utf-8" />
+	<title>Hipstars - Rate your hipp(ster)ness </title>
+	<script src="jquery.js"></script>
+	<script>
+		var playlist = new Array()
 
+		$(document).ready(function(){
+		    $('#entry_box').keypress(function(e){
+		      if(e.keyCode==13)
+		      $('#addButton').click();
+		    });
+		});
+
+		function enter()
+		{
+			var artist = document.getElementById("entry_box").value  //this gets the data from the text field and adds it to artist array
+			document.getElementById("entry_box").value = ''
+			playlist.push(artist)
+			
+			for(var i = 0; i < playlist.length; i++)
+			{
+				console.log(playlist[i])
+			}
+		}
+	</script>
 </header>
 <body>
-
-
-
-
+	<table>
+		<th>Hipstars</th>
+		<tr>
+			<td><input type="text" size='25' id="entry_box"></td><td><input id="addButton" type="button" onclick="enter()" value="Enter"></td>
+		</tr>
+	</table>
 </body>
