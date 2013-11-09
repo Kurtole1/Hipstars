@@ -41,6 +41,7 @@
 		{
 			var artist = document.getElementById("entry_box").value 
 			artist = $.trim(artist)
+			displayImage(star10) /* TEST */
 			document.getElementById("entry_box").value = ''
 			if(artist)
 			{
@@ -87,47 +88,47 @@
 		
 		function displayImage(imageName)
 		{
-			if(imageName = star0)
+			if(imageName == star0)
 			{
 				document.write(<img src="star0.png" alt="0 Stars" height="59" width="300">)
 			}
-			else if(imageName = star05)
+			else if(imageName == star05)
 			{
 				document.write(<img src="star05.png" alt="0.5 Stars" height="59" width="300">)
 			}
-			else if (imageName = star10)
+			else if (imageName == star10)
 			{
 				document.write(<img src="star10.png" alt="1 Stars" height="59" width="300">)
 			}
-			else if (imageName = star15)
+			else if (imageName == star15)
 			{
 				document.write(<img src="star1.5.png" alt="1.5 Stars" height="59" width="300">)
 			}
-			else if (imageName = star20)
+			else if (imageName == star20)
 			{
 				document.write(<img src="star20.png" alt="2 Stars" height="59" width="300">)
 			}
-			else if (imageName = star25)
+			else if (imageName == star25)
 			{
 				document.write(<img src="star25.png" alt="2.5 Stars" height="59" width="300">)
 			}
-			else if (imageName = star30)
+			else if (imageName == star30)
 			{
 				document.write(<img src="star30.png" alt="3 Stars" height="59" width="300">)
 			}
-			else if (imageName = star35)
+			else if (imageName == star35)
 			{
 				document.write(<img src="star35.png" alt="3.5 Stars" height="59" width="300">)
 			}
-			else if (imageName = star40)
+			else if (imageName == star40)
 			{
 				document.write(<img src="star40.png" alt="4 Stars" height="59" width="300">)
 			}
-			else if (imageName = star45)
+			else if (imageName == star45)
 			{
 				document.write(<img src="star45.png" alt="4.5 Stars" height="59" width="300">)
 			}
-			else if (imageName = star50)
+			else if (imageName == star50)
 			{
 				document.write(<img src="star50.png" alt="5 Stars" height="59" width="300">)
 			}
