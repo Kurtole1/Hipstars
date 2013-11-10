@@ -16,7 +16,13 @@
     			return xmlHttp.responseText;
   			}
 
-  			data = JSON.parse(query(newUrl));
-  			var familiarityScore = data.response.artist.familiarity;
-  			return familiarityScore;
+  			var familiarityScore;
+			data = JSON.parse(query(newUrl));
+			if (data.response.artist == undefined) {
+				familiarityScore = 0;
+			} else {
+				familiarityScore = data.response.artist.familiarity;
+			}
+			
+			return familiarityScore;
 		}
