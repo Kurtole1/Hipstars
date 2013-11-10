@@ -87,11 +87,10 @@
 		
 		function displayRating()
 		{
+			var Rating = getRating()
 			document.write("<img src="+ getRating() + "id='image'>");
-			
 		}
 		
-		function 
 	</script>
 </head>
 <body>
@@ -105,7 +104,7 @@
 				<br>
 				<input id="addButton" 
 					type="button" onclick="enter()" class="btn btn-hg btn-primary" value="Add">
-				<input id="addButton" 
+				<input id="calculateButton" 
 					type="button" onclick="getRating()" class="btn btn-hg btn-inverse" value="Calculate Hipsterness">	
 				<br>
 			</p>
