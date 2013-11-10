@@ -18,10 +18,12 @@
       <script src="js/html5shiv.js"></script>
     <![endif]-->
     <script src="jquery.js"></script>
+    <script src="http://connect.soundcloud.com/sdk.js"></script>
     <script type='text/javascript'>
 		var playlist = new Array()
 		var ratingData = new Array()
 		var familiarityScore
+
 		$(document).ready(function(){
 		    $('#entry_box').keypress(function(e){
 		      if(e.keyCode==13)
@@ -37,20 +39,21 @@
 			}
 		}
 
+		function replaceBody() {
+			window.location.replace("http://www.youtube.com/watch?v=oHg5SJYRHA0")
+		}
 		function enter()
 		{
 			var artist = document.getElementById("entry_box").value 
 			artist = $.trim(artist)
 			document.getElementById("entry_box").value = ''
-			if(artist)
+			if (artist == "rick astley" || artist == "Rick Astley" || artist == "Rick astley") {
+				replaceBody()
+				console.log(artist)
+			} else if(artist)
 			{
 				addToPlaylist(artist)
-			}
-			for(var i = 0; i < playlist.length; i++)
-			{
-				console.log(playlist[i])
-			}
-		}
+			}		}
 
 		function addToPlaylist(artist)
 		{
@@ -59,8 +62,45 @@
 			var txt=document.createElement("p"); 
 			txt.innerHTML= artist + " ";
 			$("#container").append(txt);
-			console.log(getRating())
-			addData(replace)       
+			addData(replace) 
+			var myUrl = "http://developer.echonest.com/api/v4/playlist/static?api_key=W05M7YM0FXSVH5CAK&type=artist&results=10&artist=" + replace + "&bucket=id:spotify-WW&bucket=tracks&limit=true";
+
+            function query(newUrl) {
+                var xmlHttp = null;
+                xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", newUrl, false );
+                xmlHttp.send( null );
+                return xmlHttp.response;
+            }
+
+            var data = JSON.parse(query(myUrl));
+            
+          	var songlist = new Array();
+          	var str
+          	var temp
+          	console.log(data)
+          	for (var i = 0; i < 10; i++) {
+          		if (data.response.status.code == 5) {
+          			str = "spotify:track:2wdEXKLcuU7B0M2gqFmABH"
+          			temp = str
+          		}
+         
+           		else{
+          		str = data.response.songs[i].tracks[0].foreign_id
+          		temp = str.replace("spotify-WW",  "spotify")
+          		}
+          		songlist[i] = temp
+          	}
+	       var results = "https://embed.spotify.com/?uri=spotify:trackset:HIPSTAR:"                             
+           for(var j = 0; j < songlist.length; j++)
+           {
+           	results += songlist[j] + ""
+           	if(j < songlist.length - 1)
+           	{
+           		results += ","
+           	} 
+           	document.getElementById("widget").src = results;
+           } 
 		}
 
 		function addData(artist)
@@ -74,7 +114,7 @@
 
 		function getFamiliarity(name) 
 		{
-	        var MyUrl = "http://developer.echonest.com/api/v4/artist/familiarity?api_key=G2QW4WBQFSGULPTX5&name=";
+	        var MyUrl = "http://developer.echonest.com/api/v4/artist/familiarity?api_key=W05M7YM0FXSVH5CAK&name=";
 	        var completeUrl = function(Url, nm) {
 	        	return Url + name + "&format=json"
 	        }
@@ -176,8 +216,9 @@
 	<center>
 	<div id="bar">
 		<h1>Hipstars</h1>
-		<h2><img "moustache.gif";></h2>
-		<p data-toggle="tooltip" id="bar" title="Tooltip copy">Rate your hip(ster)ness</p>
+		<p data-toggle="tooltip"  title="Tooltip copy">Rate your hip(ster)ness</p>
+		<img id"stache" src="moustache.jpg">
+		<br>
 		<img id="stars" src='star0.png'></p>
 	</div>
 		<div id="container" style="width: 60%">
@@ -191,6 +232,9 @@
 					type="button" onclick="displayRating()" class="btn btn-hg btn-inverse" value="Calculate">	
 				<br>
 			</p>
+		</div>
+		<div id="player">
+			<iframe id="widget" src="" frameborder="0" allowtransparency="true"></iframe>
 		</div>
 	</center>
 	<br>
