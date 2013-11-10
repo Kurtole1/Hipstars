@@ -1,8 +1,8 @@
 <!doctype html>
 <head>
-        <meta charset="utf-8" />
-        <title>Hipstars - Rate your hip(ster)ness </title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8" />
+	<title>Hipstars - A website you've probably never heard of </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -19,141 +19,196 @@
     <![endif]-->
     <script src="jquery.js"></script>
     <script type='text/javascript'>
-                var playlist = new Array()
-                var ratingData = new Array()
-                
-                $(document).ready(function(){
-                    $('#entry_box').keypress(function(e){
-                      if(e.keyCode==13)
-                      $('#addButton').click();
-                    });
-                });
+		var playlist = new Array()
+		var ratingData = new Array()
+		var familiarityScore
+		$(document).ready(function(){
+		    $('#entry_box').keypress(function(e){
+		      if(e.keyCode==13)
+		      $('#addButton').click();
+		    });
+		});
 
-                function key(character)
-                {
-                        if(character.keyCode == 13)
-                        {
-                                enter()
-                        }
-                }
+		function key(character)
+		{
+			if(character.keyCode == 13)
+			{
+				enter()
+			}
+		}
 
-                function enter()
-                {
-                        var artist = document.getElementById("entry_box").value 
-                        artist = $.trim(artist)
-                        document.getElementById("entry_box").value = ''
-                        if(artist)
-                        {
-                                addToPlaylist(artist)
-                        }
-                        for(var i = 0; i < playlist.length; i++)
-                        {
-                                console.log(playlist[i])
-                        }
-                }
+		function enter()
+		{
+			var artist = document.getElementById("entry_box").value 
+			artist = $.trim(artist)
+			document.getElementById("entry_box").value = ''
+			if(artist)
+			{
+				addToPlaylist(artist)
+			}
+			for(var i = 0; i < playlist.length; i++)
+			{
+				console.log(playlist[i])
+			}
+		}
 
-                function addToPlaylist(artist)
-                {
-                        var replace = artist.replace(/ /g, "+")  //replaces spaces with +
-                        playlist.push(replace)                   
-                        var txt=document.createElement("p"); 
-                        txt.innerHTML= artist + " ";
-                        $("#container").append(txt);
-                        addData()       
-                }
+		function addToPlaylist(artist)
+		{
+			var replace = artist.replace(/ /g, "+")  //replaces spaces with +
+			playlist.push(replace)                   
+			var txt=document.createElement("p"); 
+			txt.innerHTML= artist + " ";
+			$("#container").append(txt);
+			console.log(getRating())
+			addData(replace)       
+		}
 
-                function addData()
-                {
-                        var stat = getFamiliarity()
-                        ratingData.push(stat)
-                }
+		function addData(artist)
+		{
+			var stat = getFamiliarity(artist)
+			console.log("stat: " + stat)
+			ratingData.push(stat)
+		}
 
-                function getFamiliarity(name) {
 
-                        var MyUrl = "http://developer.echonest.com/api/v4/artist/familiarity?api_key=G2QW4WBQFSGULPTX5&name=";
 
-                        var completeUrl = function(Url, nm) {
-                        return Url + name + "&format=json"
-                        }
-        
-                        var newUrl = (completeUrl(MyUrl, name));
+		function getFamiliarity(name) 
+		{
+	        var MyUrl = "http://developer.echonest.com/api/v4/artist/familiarity?api_key=G2QW4WBQFSGULPTX5&name=";
+	        var completeUrl = function(Url, nm) {
+	        	return Url + name + "&format=json"
+	        }
+	                
+            var newUrl = (completeUrl(MyUrl, name));
 
-                        function query(url) {
-                                var xmlHttp = null;
-                                xmlHttp = new XMLHttpRequest();
-                                xmlHttp.open( "GET", newUrl, false );
-                                xmlHttp.send( null );
-                                return xmlHttp.responseText;
-                        }
+            function query(url) {
+                var xmlHttp = null;
+                xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", newUrl, false );
+                xmlHttp.send( null );
+                return xmlHttp.responseText;
+              }
+	              var familiarityScore;
+	              data = JSON.parse(query(newUrl));
+	              if (data.response.artist == undefined) {
+	              	familiarityScore = 0;
+	              } else {
+	              	familiarityScore = data.response.artist.familiarity;
+	              }
+	                                      
+              return familiarityScore;
+        }
 
-                        var familiarityScore;
-                        data = JSON.parse(query(newUrl));
-                        if (data.response.artist == undefined) {
-                                familiarityScore = 0;
-                        } else {
-                                familiarityScore = data.response.artist.familiarity;
-                        }
-                        
-                        return familiarityScore;
-                }
+		function getRating()
+		{
+			var sum = 0
+			for(var i = 0; i < ratingData.length; i++)
+			{
+				sum += ratingData[i]
+			}
+			var rating = (sum/ratingData.length)*100
+			rating = 100 - rating
+			if(rating < 10)
+			{
+				rating = 0
+			}
+			else if(rating < 20)
+			{
+				rating = 5
+			}
+			else if(rating < 27)
+			{
+				rating = 10
+			}
+			else if(rating < 36)
+			{
+				rating = 15
+			}
+			else if(rating < 43)
+			{
+				rating = 20
+			}
+			else if(rating < 48)
+			{
+				rating = 25
+			}
+			else if(rating < 56)
+			{
+				rating = 30
+			}
+			else if(rating < 65)
+			{
+				rating = 35
+			}
+			else if(rating < 73)
+			{
+				rating = 40
+			}
+			else if(rating < 86)
+			{
+				rating = 45
+			}
+			else
+			{
+				rating = 50
+			}
+			return "star" + rating + ".png"
+			//make it so it rounds to 0 5 10 15 20 25 30 35 40 45 50
+		}
 
-                function getRating()
-                {
-                        var sum = 0
-                        for(var i = 0; i < ratingData.length; i++)
-                        {
-                                sum += ratingData[i]
-                        }
-                        var rating = (sum/ratingData.length)*100
-                        rating = 100 - rating
-                        //make it so it rounds to 0 5 10 15 20 25 30 35 40 45 50
-                }
-                
-                function displayRating()
-                {
-                        var Rating = getRating()
-                        document.write("<img src="+ getRating() + "id='image'>");
-                }
-                
-        </script>
+		function displayRating()
+		{
+			if(playlist.length != 0)
+			{
+				var source = "cust_images/"+ getRating()
+				document.getElementById("stars").src = source
+				$("input").remove();
+				$("#bar").append("<input id='newSearchButton' type='button' onclick='window.location.reload()'  class='btn btn-hg btn-success' value='New Search'>");
+			}
+			else
+			{
+				alert("Error: No data inputted")
+			}
+		}
+	</script>
 </head>
 <body>
-        <center>
-                <h1>Hipstars</h1>
-                 <p data-toggle="tooltip" title="Tooltip copy">Rate your hip(ster)ness</p>
-                <div id="container" style="width: 60%">
-                        <p>
-                                <input type="text" onkeypress='return key(event)' id="entry_box" class="form-control" 
-                                placeholder="Enter artist name"> 
-                                <br>
-                                <input id="addButton" 
-                                        type="button" onclick="enter()" class="btn btn-hg btn-primary" value="Add">
-                                <input id="calculateButton" 
-                                        type="button" onclick="getRating()" class="btn btn-hg btn-inverse" value="Calculate Hipsterness">        
-                                <br>
-                        </p>
-                </div>
-        </center>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <center><a href="http://the.echonest.com/"><img src="echonest.gif"></a></center>
+	<center>
+		<h1>Hipstars</h1>
+		<p data-toggle="tooltip" id="bar" title="Tooltip copy">Rate your hip(ster)ness</p>
+		<img id="stars" src='star0.png'></p>
+		<div id="container" style="width: 60%">
+			<p>
+				<input type="text" onkeypress='return key(event)' id="entry_box" class="form-control" 
+				placeholder="Enter the name of the artist here"> 
+				<br>
+				<input id="addButton" 
+					type="button" onclick="enter()" class="btn btn-hg btn-primary" value="Add">
+				<input id="calculateButton" 
+					type="button" onclick="displayRating()" class="btn btn-hg btn-inverse" value="Calculate">	
+				<br>
+			</p>
+		</div>
+	</center>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<center><a href="http://the.echonest.com/"><img src="echonest.gif"></a></center>
 
-                <script src="js/jquery-1.8.3.min.js"></script>
-            <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
-            <script src="js/jquery.ui.touch-punch.min.js"></script>
-            <script src="js/bootstrap.min.js"></script>
-            <script src="js/bootstrap-select.js"></script>
-            <script src="js/bootstrap-switch.js"></script>
-            <script src="js/flatui-checkbox.js"></script>
-            <script src="js/flatui-radio.js"></script>
-            <script src="js/jquery.tagsinput.js"></script>
-            <script src="js/jquery.placeholder.js"></script>
-
+	<script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-select.js"></script>
+    <script src="js/bootstrap-switch.js"></script>
+    <script src="js/flatui-checkbox.js"></script>
+    <script src="js/flatui-radio.js"></script>
+    <script src="js/jquery.tagsinput.js"></script>
+    <script src="js/jquery.placeholder.js"></script>
 </body>
