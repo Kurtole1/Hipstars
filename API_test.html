@@ -1,0 +1,67 @@
+<!doctype html>
+	<title>Hipstars</title>
+	<meta charset="utf-8" />
+	<script src="jquery.js"></script>
+	<script>
+		
+		var familiarityScore;
+
+		function getFamiliarity(name) {
+	
+			var Url = "http://developer.echonest.com/api/v4/artist/familiarity?api_key=G2QW4WBQFSGULPTX5&name=";
+
+			var completeUrl = function(Url, name) {
+				return Url + name + "&format=json"
+			}
+		
+			var newUrl = (completeUrl(Url, artistName));
+
+			$.ajaxSetup({
+    			"error": function(jqXHR, status, thrownError) {
+        			alert('error');
+       				var responseText = jQuery.parseJSON(jqXHR.responseText);
+        			console.log(responseText);
+    			}
+			});
+
+			$.when( $.ajax({
+  					url: newUrl
+			})
+			.complete(function(obj, status) {
+				response = JSON.parse(obj.responseText);
+				familiarityScore = (response.response.artist.familiarity);
+				insert(familiarityScore);
+				console.log(familiarityScore)
+			})
+			.fail(function() {
+				alert("no artist with that name found");
+			}))
+
+			
+
+		}
+
+		var artistName = prompt("What Artist?");
+
+		getFamiliarity(artistName);
+
+		var score;
+		function insert (data) {
+			score = data;
+		}
+		console.log(score);
+		
+
+		//response = JSON.parse(request)
+
+		//.done(function( artist ){
+			//response = JSON.parse(msg);
+		//	console.log("familiarity" + artist);
+		//})
+
+		
+		
+		//var response = JSON.parse(request.responseText)
+		//alert(obj.length)
+		
+	</script>
