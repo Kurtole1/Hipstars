@@ -1,7 +1,7 @@
 <!doctype html>
 <head>
 	<meta charset="utf-8" />
-	<title>Hipstars - Rate your hip(ster)ness </title>
+	<title>Hipstars - A Website You've Probably Never Heard Of</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
@@ -58,7 +58,7 @@
 			playlist.push(replace)                   
 			var txt=document.createElement("p"); 
 			txt.innerHTML= artist + " ";
-			$("#container").append(txt);
+			$("#container").append(txt); 
 			console.log(getRating())
 			addData()       
 		}
@@ -127,7 +127,7 @@
 			{
 				rating = 50
 			}
-			return "star" + rating + ".png"
+			return "star" + rating + ".png";
 			//make it so it rounds to 0 5 10 15 20 25 30 35 40 45 50
 		}
 
@@ -135,14 +135,13 @@
 		{
 			if(playlist.length != 0)
 			{
-			/*
-			var tag = "<img src='cust_images/"+ getRating() + "' id='image'>"
-			var txt=document.createElement("p"); 
-			txt.innerHTML= tag;
-			$("#stars").append(txt)
-			*/
-			var source = "cust_images/"+ getRating()
-			document.getElementById("stars").src = source
+				var source = "cust_images/"+ getRating();
+				document.getElementById("stars").src = source;
+				$("input").remove();
+				var but=document.createElement("button"); 
+				but.innerHTML= "hello";
+				$("#container").append(but); 
+				$("#container").append("<input id="newSearchButton" type="button" onclick="window.location.reload()"  class="btn btn-hg btn-success" value="newSearch">");
 			}
 			else
 			{
@@ -154,13 +153,12 @@
 <body>
 	<center>
 		<h1>Hipstars</h1>
-		<p data-toggle="tooltip" title="Tooltip copy">Rate your hip(ster)ness</p>
-		<img id="stars" src=''></p>
+		<h6>Rate your hip(ster)ness</h6>
+		<img id="stars" src=''>
 		<div id="container" style="width: 60%">
 			<p>
 				<input type="text" onkeypress='return key(event)' id="entry_box" class="form-control" 
-				placeholder="Enter the name of the artist here"> 
-				<br>
+				placeholder="Enter artist name here" > 
 				<input id="addButton" 
 					type="button" onclick="enter()" class="btn btn-hg btn-primary" value="Add">
 				<input id="calculateButton" 
